@@ -55,12 +55,7 @@ export default function WalletProvider({ children }: any) {
       }
 
       const _provider = await web3auth.connect();
-      const __provider = new ethers.BrowserProvider(_provider);
-      const _signer = await __provider.getSigner();
-
-      gState.wallet.set(_signer.address);
-      console.log('SIGNER: ', _signer);
-      setProvider(_signer);
+      console.log('_provider: ', _provider);
     } catch (e) {
       console.error('Connect:', e);
     }
@@ -77,9 +72,15 @@ export default function WalletProvider({ children }: any) {
     web3auth.on(
       ADAPTER_EVENTS.CONNECTED,
       async (data: CONNECTED_EVENT_DATA) => {
-        console.log('connected to wallet', data);
-        // web3auth.provider will be available here after user is connected
-        setConnected(true);
+        console.log('web3auth: ', web3auth.provider);
+
+        const __provider = new ethers.BrowserProvider(web3auth.provider);
+        const _signer = await __provider.getSigner();
+
+        console.log('SIGNER: ', _signer);
+        setProvider(_signer);
+        gState.wallet.set(_signer.address);
+        setConnected(web3auth.status == 'connected');
       }
     );
     web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
@@ -119,6 +120,8 @@ export default function WalletProvider({ children }: any) {
   }
 
   async function loadContract() {
+    if (!provider) return;
+
     try {
       const nft = new Contract(
         gState['contracts']['nft']['address'].get({ noproxy: true }),
@@ -149,7 +152,7 @@ export default function WalletProvider({ children }: any) {
     if (isConnected) {
       grecaptcha();
     }
-  }, [isConnected]);
+  }, [isConnected, provider]);
 
   useEffect(() => {
     onLoad();
@@ -162,7 +165,9 @@ export default function WalletProvider({ children }: any) {
   const grecaptcha = async () => {
     if (window.grecaptcha) {
       try {
-        window.grecaptcha.ready((_) => executeGrecapcha(CONFIG.project));
+        window.grecaptcha.ready((_) => {
+          executeGrecapcha(CONFIG.project);
+        });
       } catch (error) {
         console.error('grecaptcha: ', error);
       }
