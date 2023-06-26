@@ -5,7 +5,10 @@ import { devtools } from '@hookstate/devtools';
 
 export const globalState = hookstate(
   {
-    user: null as any,
+    wallet: '',
+    verify: null as any,
+    blockchain: null as any,
+    contracts: null as any,
   },
   devtools({ key: 'globalState' })
 );
