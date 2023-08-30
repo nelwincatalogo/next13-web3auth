@@ -77,8 +77,17 @@ export default function WalletProvider({ children }: any) {
         const __provider = new ethers.BrowserProvider(web3auth.provider);
         const _signer = await __provider.getSigner();
 
+        // const info = await web3auth.authenticateUser();
+        // console.info('info: ', info);
+
+        // const privateKey = await web3auth.provider.request({
+        //   method: 'eth_private_key',
+        // });
+        // console.log('privateKey: ', privateKey);
+
         console.log('SIGNER: ', _signer);
         setProvider(_signer);
+
         gState.wallet.set(_signer.address);
         setConnected(web3auth.status == 'connected');
       }
