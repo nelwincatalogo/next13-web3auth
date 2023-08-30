@@ -10,9 +10,9 @@ import {
   CONNECTED_EVENT_DATA,
 } from '@web3auth/base';
 import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
-import axios, { BLOCKCHAIN } from '@/api';
-import { useGlobalState } from '@/store';
-import CONFIG from '@/config';
+import axios, { BLOCKCHAIN } from '@/lib/api';
+import { useGlobalState } from '@/lib/store';
+import CONFIG from '@/lib/config';
 
 export const WalletContext = createContext<any>({});
 export const useWalletContext = () => useContext(WalletContext);

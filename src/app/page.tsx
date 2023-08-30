@@ -2,7 +2,7 @@
 
 import ReactAlertSample from '@/components/ReactAlertSample';
 import { useWalletContext } from '@/context/wallet';
-import { useGlobalState } from '@/store';
+import { useGlobalState } from '@/lib/store';
 import { useHookstate } from '@hookstate/core';
 
 export default function Home() {
